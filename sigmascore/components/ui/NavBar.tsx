@@ -24,6 +24,12 @@ const NavBar = () => {
         SigmaScore
       </div>
       <div className="flex items-center gap-2">
+      <button
+          className="bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded"
+          onClick={() => window.location.href = '/leaderboard'}
+        >
+          Leaderboard
+        </button>
         <button
           className="bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded"
           onClick={() => window.location.href = '/login'}

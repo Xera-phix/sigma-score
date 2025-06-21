@@ -47,16 +47,35 @@ const Dashboard = () => {
         </section>
         {/* Leaderboard */}
         <section className="bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-8 mb-10">
-          <h2 className="font-orbitron text-2xl text-white font-bold mb-6">Leaderboard</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="font-orbitron text-2xl text-white font-bold">
+              Sigma Leaderboard
+            </h2>
+            <button
+              className="bg-vr-pink text-white font-bold px-4 py-2 rounded-lg shadow hover:scale-105 transition-transform"
+              onClick={() => window.location.href = '/leaderboard'}
+            >
+              Visit Leaderboard
+            </button>
+          </div>
+
           <ol className="space-y-3">
             {leaderboard.map((entry, i) => (
-              <li key={entry.name} className={`flex items-center justify-between px-4 py-2 rounded-lg ${entry.name === "You" ? "bg-vr-pink/30 text-white font-bold" : "bg-white/5 text-white/80"}`}>
+              <li
+                key={entry.name}
+                className={`flex items-center justify-between px-4 py-2 rounded-lg ${
+                  entry.name === "You"
+                    ? "bg-vr-pink/30 text-white font-bold"
+                    : "bg-white/5 text-white/80"
+                }`}
+              >
                 <span>{i + 1}. {entry.name}</span>
                 <span>{entry.score}</span>
               </li>
             ))}
           </ol>
         </section>
+
         {/* Daily Tasks */}
         <section className="bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-8 mb-10">
           <h2 className="font-orbitron text-2xl text-white font-bold mb-6">Daily Tasks</h2>
