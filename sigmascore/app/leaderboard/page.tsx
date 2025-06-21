@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import NavBar from "../../components/ui/NavBar"; // Adjust path if needed
+import NavBar from "../../components/ui/NavBar";
 
 const LeaderboardPage = () => {
   const [selectedBoard, setSelectedBoard] = useState("sigma");
@@ -22,92 +22,102 @@ const LeaderboardPage = () => {
       { name: "ChadClone", auraPoints: 850, sigmaStreak: 25 },
     ],
     beta: [
-        { name: "DarkHorse", auraPoints: 1750, sigmaStreak: 51 },
-        { name: "You", auraPoints: 1600, sigmaStreak: 49 },
-        { name: "Underdog", auraPoints: 1300, sigmaStreak: 39 },
-        { name: "LastPick", auraPoints: 1000, sigmaStreak: 30 },
-        { name: "Survivor", auraPoints: 800, sigmaStreak: 22 },
-      ],
-    omega: [
       { name: "DarkHorse", auraPoints: 1750, sigmaStreak: 51 },
       { name: "You", auraPoints: 1600, sigmaStreak: 49 },
       { name: "Underdog", auraPoints: 1300, sigmaStreak: 39 },
       { name: "LastPick", auraPoints: 1000, sigmaStreak: 30 },
       { name: "Survivor", auraPoints: 800, sigmaStreak: 22 },
     ],
+    omega: [
+      { name: "ShadowWalker", auraPoints: 1700, sigmaStreak: 47 },
+      { name: "You", auraPoints: 1600, sigmaStreak: 46 },
+      { name: "NightWolf", auraPoints: 1300, sigmaStreak: 35 },
+      { name: "Ghost", auraPoints: 1000, sigmaStreak: 30 },
+      { name: "LoneWolf", auraPoints: 850, sigmaStreak: 25 },
+    ],
     gamma: [
-        { name: "DarkHorse", auraPoints: 1750, sigmaStreak: 51 },
-        { name: "You", auraPoints: 1600, sigmaStreak: 49 },
-        { name: "Underdog", auraPoints: 1300, sigmaStreak: 39 },
-        { name: "LastPick", auraPoints: 1000, sigmaStreak: 30 },
-        { name: "Survivor", auraPoints: 800, sigmaStreak: 22 },
-      ],
+      { name: "Zenith", auraPoints: 1650, sigmaStreak: 45 },
+      { name: "You", auraPoints: 1500, sigmaStreak: 43 },
+      { name: "Pulse", auraPoints: 1250, sigmaStreak: 36 },
+      { name: "Flicker", auraPoints: 980, sigmaStreak: 28 },
+      { name: "Ember", auraPoints: 790, sigmaStreak: 20 },
+    ],
     delta: [
-    { name: "DarkHorse", auraPoints: 1750, sigmaStreak: 51 },
-    { name: "You", auraPoints: 1600, sigmaStreak: 49 },
-    { name: "Underdog", auraPoints: 1300, sigmaStreak: 39 },
-    { name: "LastPick", auraPoints: 1000, sigmaStreak: 30 },
-    { name: "Survivor", auraPoints: 800, sigmaStreak: 22 },
+      { name: "Abyss", auraPoints: 1600, sigmaStreak: 42 },
+      { name: "You", auraPoints: 1500, sigmaStreak: 40 },
+      { name: "Dusk", auraPoints: 1200, sigmaStreak: 33 },
+      { name: "Gloom", auraPoints: 950, sigmaStreak: 27 },
+      { name: "Wanderer", auraPoints: 770, sigmaStreak: 19 },
     ],
   };
 
   const currentLeaderboard = leaderboards[selectedBoard];
 
   return (
-    <div className="min-h-screen bg-vr-gradient relative overflow-hidden">
+    <div className="min-h-screen bg-black relative overflow-hidden">
       <NavBar />
-      <div className="max-w-5xl mx-auto pt-32 pb-16 px-4">
-        <section className="bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-8 mb-10">
-          
-          {/* Title + Dropdown */}
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="font-orbitron text-4xl text-white font-bold">
-              {selectedBoard.charAt(0).toUpperCase() + selectedBoard.slice(1)} Leaderboard
-            </h1>
-            <select
-              className="bg-white/20 text-white px-4 py-2 rounded-lg font-medium backdrop-blur-md border border-white/30"
-              value={selectedBoard}
-              onChange={(e) => setSelectedBoard(e.target.value)}
-            >
-              <option value="sigma">Sigma Leaderboard</option>
-              <option value="alpha">Alpha Leaderboard</option>
-              <option value="beta">Beta Leaderboard</option>
-              <option value="omega">Omega Leaderboard</option>
-              <option value="gamma">Gamma Leaderboard</option>
-              <option value="delta">Delta Leaderboard</option>
-            </select>
-          </div>
+      {/* Glow FX */}
+      <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-purple-800 rounded-full blur-3xl opacity-30 -z-10" />
+      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-600 rounded-full blur-2xl opacity-20 -z-10" />
 
-          {/* Table Headers */}
-          <div
-            className="grid px-6 py-2 text-white/70 font-bold text-lg border-b border-white/20 mb-4"
-            style={{ gridTemplateColumns: "2fr 1fr 1fr" }}
+      <div className="max-w-5xl mx-auto pt-28 pb-20 px-4">
+        <section className="mb-10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-white">
+            {selectedBoard.charAt(0).toUpperCase() + selectedBoard.slice(1)} Leaderboard
+          </h1>
+          <select
+            className="bg-purple-800/30 text-white px-5 py-2 rounded-xl border border-purple-500/40 shadow-md hover:bg-purple-700/40 transition backdrop-blur-md"
+            value={selectedBoard}
+            onChange={(e) => setSelectedBoard(e.target.value)}
           >
-            <span>Name</span>
-            <span className="text-right">Aura Points</span>
-            <span className="text-right">Sigma Streak</span>
-          </div>
-
-          {/* Leaderboard Entries */}
-          <ol className="space-y-2">
-            {currentLeaderboard.map((entry, index) => (
-              <li
-                key={entry.name}
-                className={`grid items-center px-6 py-3 rounded-xl text-lg ${
-                    entry.name === "You"
-                      ? "bg-gradient-to-br from-purple-400 via-blue-300 to-blue-200 text-vr-purple font-bold shadow-md"
-                      : "bg-white/5 text-white/80"
-                  }`}                  
-                  
-                style={{ gridTemplateColumns: "2fr 1fr 1fr" }}
-              >
-                <span>{index + 1}. {entry.name}</span>
-                <span className="text-right">{entry.auraPoints}</span>
-                <span className="text-right">{entry.sigmaStreak}</span>
-              </li>
+            {Object.keys(leaderboards).map((key) => (
+              <option key={key} value={key}>
+                {key.charAt(0).toUpperCase() + key.slice(1)} Leaderboard
+              </option>
             ))}
-          </ol>
+          </select>
         </section>
+
+        <div className="overflow-x-auto rounded-2xl bg-gradient-to-br from-purple-900/80 to-black/80 border border-purple-500/30 shadow-2xl backdrop-blur-md">
+          <table className="min-w-full text-left text-white text-lg font-medium">
+            <thead>
+              <tr className="bg-black text-white">
+                <th className="px-6 py-4">🏅 Rank</th>
+                <th className="px-6 py-4">👤 Name</th>
+                <th className="px-6 py-4">🔮 Aura Points</th>
+                <th className="px-6 py-4">🔥 Sigma Streak</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentLeaderboard.map((entry, index) => (
+                <tr
+                  key={entry.name}
+                  className={`transition duration-200 ${
+                    entry.name === "You"
+                      ? "bg-purple-700/40 font-bold text-white"
+                      : "hover:bg-purple-600/20"
+                  }`}
+                >
+                  <td className="px-6 py-4">{index + 1}</td>
+                  <td className="px-6 py-4">{entry.name}</td>
+                  <td className="px-6 py-4">{entry.auraPoints}</td>
+                  <td className="px-6 py-4">{entry.sigmaStreak}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="mt-12 text-sm text-purple-300 text-center">
+          Last updated:{" "}
+          <span className="text-white">
+            {new Date().toLocaleDateString(undefined, {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </span>
+        </div>
       </div>
     </div>
   );
