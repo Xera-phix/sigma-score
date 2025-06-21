@@ -10,7 +10,7 @@ export default function HomePage() {
   // Load image from public folder on component mount
   useEffect(() => {
     const fetchImage = async () => {
-      const response = await fetch('/mewing.jpg'); // Public folder path
+      const response = await fetch('/upper body gigachad.jpg'); // Public folder path
       const blob = await response.blob();
       const reader = new FileReader();
 
@@ -29,7 +29,7 @@ export default function HomePage() {
 
     setLoading(true);
     try {
-      const response = await fetch('/api/analyze', {
+      const response = await fetch('/api/analyzeString', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

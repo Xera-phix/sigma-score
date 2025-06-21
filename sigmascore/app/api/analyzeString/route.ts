@@ -28,15 +28,32 @@ export async function POST(request: NextRequest) {
       },
     ];
 
-    const prompt = 'Given the image of a person, rate their looksmaxxing and how sigma male they are based on the \
-                    given criteria. Evaluate each of the criteria from a score of 0-100. Do not include any : \
-                    justification for your rating, only include the number. Afterwards, include an overall score. \
-                    - chiseled jawline \
-                    - hunter eyes \
-                    - chin length \
-                    - pursed lips \
-                    - 120 degree gonial angle \
-                    - high cheekbones';
+    const prompt = `Given the image of a person, rate their looksmaxxing and how sigma male they are based on the given criteria.
+
+      Evaluate each of the criteria from a score of 0-100.
+      Do not include any justification for your rating, only include the number.
+
+      There will be two types of images:
+
+      If the image is only of a person's face, please use only the following criteria:
+      - chiseled jawline
+      - hunter eyes
+      - chin length
+      - pursed lips
+      - gonial angle
+      - high cheekbones
+      - thick eyebrows
+      - healthy sigma hair
+      - clear skin
+
+      If the image includes some body portions apart from the face, also consider the following criteria:
+      - broad shoulders
+      - tapered waist
+      - posture
+      - height and body proportions
+      - low body fat and muscular build
+
+      Return the scores in JSON format.`;
     const result = await model.generateContent([prompt, ...imageParts]);
     const response = await result.response;
     const text = response.text();
