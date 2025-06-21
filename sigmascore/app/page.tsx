@@ -10,7 +10,7 @@ export default function HomePage() {
   // Load image from public folder on component mount
   useEffect(() => {
     const fetchImage = async () => {
-      const response = await fetch('/gigachad.jpg'); // Public folder path
+      const response = await fetch('/mewing.jpg'); // Public folder path
       const blob = await response.blob();
       const reader = new FileReader();
 

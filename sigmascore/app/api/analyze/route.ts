@@ -28,7 +28,15 @@ export async function POST(request: NextRequest) {
       },
     ];
 
-    const prompt = 'Describe this image in detail.';
+    const prompt = 'Given the image of a person, rate their looksmaxxing and how sigma male they are based on the \
+                    given criteria. Evaluate each of the criteria from a score of 0-100. Do not include any : \
+                    justification for your rating, only include the number. Afterwards, include an overall score. \
+                    - chiseled jawline \
+                    - hunter eyes \
+                    - chin length \
+                    - pursed lips \
+                    - 120 degree gonial angle \
+                    - high cheekbones';
     const result = await model.generateContent([prompt, ...imageParts]);
     const response = await result.response;
     const text = response.text();
