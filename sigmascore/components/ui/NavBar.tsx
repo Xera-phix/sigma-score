@@ -23,50 +23,58 @@ const NavBar = () => {
       <div className="font-orbitron text-white text-xl lg:text-2xl cursor-pointer select-none" onClick={() => window.location.href = '/'}>
         SigmaScore
       </div>
+
+      {/* 🌐 Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-8">
         <a href="/" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Home</a>
         <a href="/dashboard" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Dashboard</a>
         <a href="/scanner" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Sigma Scanner</a>
-        <a href="/login" className="ml-4 bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded shadow hover:scale-105 transition-transform ring-4 ring-vr-pink/40 ring-offset-2 ring-offset-black animate-pulse">Log In</a>
-      </nav>
-      {/* Hamburger Menu */}
-      <div className="md:hidden flex items-center">
-      <div className="flex items-center gap-2">
-      <button
-          className="bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded"
-          onClick={() => window.location.href = '/leaderboard'}
-        >
-          Leaderboard
-        </button>
-        <button
-          className="bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded"
-          onClick={() => window.location.href = '/login'}
-        >
+        <a href="/leaderboard" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Leaderboard</a>
+        <a href="/login" className="ml-4 bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded shadow hover:scale-105 transition-transform ring-4 ring-vr-pink/40 ring-offset-2 ring-offset-black animate-pulse">
           Log In
-        </button>
-        {/* Hamburger Menu */}
-        <button
-          className="ml-2 flex flex-col justify-center items-center w-10 h-10 rounded bg-white/20 backdrop-blur-md hover:bg-white/40 shadow-md"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Open menu"
-        >
-          <span className={`block w-6 h-0.5 bg-vr-deep mb-1 transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
-          <span className={`block w-6 h-0.5 bg-vr-deep mb-1 transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`}></span>
-          <span className={`block w-6 h-0.5 bg-vr-deep transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
-        </button>
-      </div>
-      {/* Hamburger Dropdown */}
-      {menuOpen && (
-        <div className="absolute right-4 top-16 bg-black/90 backdrop-blur-xl rounded shadow-lg py-4 px-6 flex flex-col space-y-4 z-30 min-w-[150px] border border-white/10">
-          <a href="/" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Home</a>
-          <a href="/dashboard" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Dashboard</a>
-          <a href="/scanner" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Sigma Scanner</a>
-          <a href="/login" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Log In</a>
+        </a>
+      </nav>
+
+      {/* 📱 Mobile Navigation */}
+      <div className="md:hidden flex items-center">
+        <div className="flex items-center gap-2">
+          <button
+            className="bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded"
+            onClick={() => window.location.href = '/leaderboard'}
+          >
+            Leaderboard
+          </button>
+          <button
+            className="bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded"
+            onClick={() => window.location.href = '/login'}
+          >
+            Log In
+          </button>
+
+          {/* 🍔 Hamburger Menu Button */}
+          <button
+            className="ml-2 flex flex-col justify-center items-center w-10 h-10 rounded bg-white/20 backdrop-blur-md hover:bg-white/40 shadow-md"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Open menu"
+          >
+            <span className={`block w-6 h-0.5 bg-vr-deep mb-1 transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
+            <span className={`block w-6 h-0.5 bg-vr-deep mb-1 transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`}></span>
+            <span className={`block w-6 h-0.5 bg-vr-deep transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
+          </button>
         </div>
-      )}
-    </div>
-    {/* End Hamburger Menu */}
-  </header>
+
+        {/* 📱 Hamburger Dropdown */}
+        {menuOpen && (
+          <div className="absolute right-4 top-16 bg-black/90 backdrop-blur-xl rounded shadow-lg py-4 px-6 flex flex-col space-y-4 z-30 min-w-[150px] border border-white/10">
+            <a href="/" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Home</a>
+            <a href="/dashboard" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Dashboard</a>
+            <a href="/scanner" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Sigma Scanner</a>
+            <a href="/leaderboard" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Leaderboard</a>
+            <a href="/login" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Log In</a>
+          </div>
+        )}
+      </div>
+    </header>
   );
 };
 
