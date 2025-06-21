@@ -64,7 +64,9 @@ const NavBar = () => {
           <a href="/login" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Log In</a>
         </div>
       )}
-    </header>
+    </div>
+    {/* End Hamburger Menu */}
+  </header>
   );
 };
 
