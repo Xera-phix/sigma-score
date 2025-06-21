@@ -1,71 +1,65 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-export default function HomePage() {
-  const [image, setImage] = useState<string | null>(null);
-  const [result, setResult] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+const dynamicTexts = [
+  "Welcome to SigmaScore!",
+  "Build your aura.",
+  "Unlock your sigma potential.",
+  "Join the leaderboard.",
+  "Scan your aura now!",
+];
 
-  // Load image from public folder on component mount
+export default function LandingPage() {
+  const [currentText, setCurrentText] = useState(0);
+  const [fade, setFade] = useState(true);
+
   useEffect(() => {
-    const fetchImage = async () => {
-      const response = await fetch('/upper body gigachad.jpg'); // Public folder path
-      const blob = await response.blob();
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        setImage(reader.result as string); // Base64 result
-      };
-
-      reader.readAsDataURL(blob); // Convert image blob to base64
-    };
-
-    fetchImage();
+    const interval = setInterval(() => {
+      setFade(false);
+      setTimeout(() => {
+        setCurrentText((prev) => (prev + 1) % dynamicTexts.length);
+        setFade(true);
+      }, 500);
+    }, 2500);
+    return () => clearInterval(interval);
   }, []);
 
-  const analyzeImage = async () => {
-    if (!image) return;
-
-    setLoading(true);
-    try {
-      const response = await fetch('/api/analyzeString', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ image }),
-      });
-
-      const data = await response.json();
-      setResult(data.text || data.error);
-    } catch (err) {
-      setResult('Error analyzing image.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Image Analysis with Gemini</h1>
-      {image && <img src={image} alt="Loaded" style={{ width: '300px', marginTop: '1rem' }} />}
-      <button onClick={analyzeImage} disabled={!image || loading}>
-        {loading ? 'Analyzing...' : 'Analyze Predefined Image'}
-      </button>
-      <button
-        style={{ marginTop: '1rem', padding: '0.5rem 1.5rem', background: '#7c3aed', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}
-        onClick={() => window.location.href = '/dashboard'}
-      >
-        Go to Dashboard
-      </button>
-
-      {result && (
-        <div style={{ marginTop: '2rem' }}>
-          <h2>Result:</h2>
-          <p>{result}</p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-vr-purple via-vr-red to-vr-coral">
+      <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-5xl p-8 gap-12">
+        {/* Left: Dynamic Text */}
+        <div className="flex-1 flex flex-col items-start justify-center">
+          <h1
+            className={`text-4xl md:text-5xl font-bold text-white mb-6 transition-opacity duration-500 ${
+              fade ? "opacity-100" : "opacity-0"
+            }`}
+            style={{ minHeight: "3.5em" }}
+          >
+            {dynamicTexts[currentText]}
+          </h1>
+          <p className="text-lg text-white/80 max-w-md mb-8">
+            Experience the next generation of aura analysis and leaderboard
+            competition. Upload your image, analyze your aura, and see how you
+            rank among the best!
+          </p>
+          <a
+            href="/login"
+            className="inline-block bg-white text-vr-purple font-bold px-8 py-3 rounded-xl shadow-lg hover:bg-vr-pink hover:text-white transition-colors"
+          >
+            Get Started
+          </a>
         </div>
-      )}
+        {/* Right: GIF */}
+        <div className="flex-1 flex items-center justify-center">
+          <img
+            src="/gigachad.gif"
+            alt="SigmaScore Hero"
+            className="w-80 h-80 object-cover rounded-2xl shadow-2xl border-4 border-white/20 bg-black/30"
+            style={{ maxWidth: "100%", maxHeight: "350px" }}
+          />
+        </div>
+      </div>
     </div>
   );
 }
