@@ -31,6 +31,20 @@ const NavBar = () => {
       </nav>
       {/* Hamburger Menu */}
       <div className="md:hidden flex items-center">
+      <div className="flex items-center gap-2">
+      <button
+          className="bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded"
+          onClick={() => window.location.href = '/leaderboard'}
+        >
+          Leaderboard
+        </button>
+        <button
+          className="bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded"
+          onClick={() => window.location.href = '/login'}
+        >
+          Log In
+        </button>
+        {/* Hamburger Menu */}
         <button
           className="ml-2 flex flex-col justify-center items-center w-10 h-10 rounded bg-white/20 backdrop-blur-md hover:bg-white/40 shadow-md"
           onClick={() => setMenuOpen(!menuOpen)}
