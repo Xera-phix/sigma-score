@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
       - height and body proportions
       - low body fat and muscular build
 
-      Return the scores in JSON format.`;
+        `;
     const result = await model.generateContent([prompt, ...imageParts]);
     const response = await result.response;
     const text = response.text();
