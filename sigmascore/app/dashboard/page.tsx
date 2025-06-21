@@ -28,7 +28,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-vr-gradient relative overflow-hidden">
       <NavBar />
       <div className="max-w-5xl mx-auto pt-32 pb-16 px-4">
-        {/* Sigma Score & Rank */}
+        {/* Sigma Score & Rank - Full Top Row */}
         <section className="bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-8 mb-10 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-6">
             <img src={profilePic} alt="Profile" className="w-28 h-28 rounded-full border-4 border-vr-pink object-cover bg-black/30" />
@@ -45,37 +45,50 @@ const Dashboard = () => {
             </div>
           </div>
         </section>
-        {/* Leaderboard */}
-        <section className="bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-8 mb-10">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="font-orbitron text-2xl text-white font-bold">
-              Sigma Leaderboard
-            </h2>
-            <button
-              className="bg-vr-pink text-white font-bold px-4 py-2 rounded-lg shadow hover:scale-105 transition-transform"
-              onClick={() => window.location.href = '/leaderboard'}
-            >
-              Visit Leaderboard
-            </button>
-          </div>
-
-          <ol className="space-y-3">
-            {leaderboard.map((entry, i) => (
-              <li
-                key={entry.name}
-                className={`flex items-center justify-between px-4 py-2 rounded-lg ${
-                  entry.name === "You"
-                    ? "bg-vr-pink/30 text-white font-bold"
-                    : "bg-white/5 text-white/80"
-                }`}
+        {/* Leaderboard & Scanner Side by Side */}
+        <div className="flex flex-col md:flex-row gap-8 mb-10">
+          <section className="flex-1 bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-8">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="font-orbitron text-2xl text-white font-bold">
+                Sigma Leaderboard
+              </h2>
+              <button
+                className="bg-vr-pink text-white font-bold px-4 py-2 rounded-lg shadow hover:scale-105 transition-transform"
+                onClick={() => window.location.href = '/leaderboard'}
               >
-                <span>{i + 1}. {entry.name}</span>
-                <span>{entry.score}</span>
-              </li>
-            ))}
-          </ol>
-        </section>
-
+                Visit Leaderboard
+              </button>
+            </div>
+            <ol className="space-y-3">
+              {leaderboard.map((entry, i) => (
+                <li
+                  key={entry.name}
+                  className={`flex items-center justify-between px-4 py-2 rounded-lg ${
+                    entry.name === "You"
+                      ? "bg-vr-pink/30 text-white font-bold"
+                      : "bg-white/5 text-white/80"
+                  }`}
+                >
+                  <span>{i + 1}. {entry.name}</span>
+                  <span>{entry.score}</span>
+                </li>
+              ))}
+            </ol>
+          </section>
+          {/* Scanner Column */}
+          <div className="md:w-[340px] w-full flex-shrink-0 mt-10 md:mt-0 flex md:items-center">
+            <section className="bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-8 flex flex-col items-center h-full w-full">
+              <h2 className="font-orbitron text-2xl text-white font-bold mb-4">Sigma Scanner</h2>
+              <p className="text-white/80 mb-6 text-center max-w-md">Scan your aura and get personalized sigma insights. Ready to see your true potential?</p>
+              <button
+                className="bg-gradient-to-r from-purple-500 via-vr-pink to-pink-500 text-white font-bold px-8 py-3 rounded-xl text-lg shadow-lg hover:scale-105 transition-transform"
+                onClick={() => window.location.href = '/scanner'}
+              >
+                Launch Sigma Scanner
+              </button>
+            </section>
+          </div>
+        </div>
         {/* Daily Tasks */}
         <section className="bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-8 mb-10">
           <h2 className="font-orbitron text-2xl text-white font-bold mb-6">Daily Tasks</h2>
@@ -90,17 +103,6 @@ const Dashboard = () => {
               </li>
             ))}
           </ul>
-        </section>
-        {/* Sigma Scanner */}
-        <section className="bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-8 flex flex-col items-center">
-          <h2 className="font-orbitron text-2xl text-white font-bold mb-4">Sigma Scanner</h2>
-          <p className="text-white/80 mb-6 text-center max-w-md">Scan your aura and get personalized sigma insights. Ready to see your true potential?</p>
-          <button
-            className="bg-gradient-to-r from-vr-purple via-vr-red to-vr-coral text-white font-bold px-8 py-3 rounded-xl text-lg shadow-lg hover:scale-105 transition-transform"
-            onClick={() => window.location.href = '/scanner'}
-          >
-            Launch Sigma Scanner
-          </button>
         </section>
       </div>
     </div>
