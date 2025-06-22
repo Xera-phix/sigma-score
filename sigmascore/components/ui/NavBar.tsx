@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from "react";
 
 const NavBar = () => {
@@ -30,6 +32,7 @@ const NavBar = () => {
         <a href="/dashboard" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Dashboard</a>
         <a href="/scanner" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Sigma Scanner</a>
         <a href="/leaderboard" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Leaderboard</a>
+        <a href="/shop" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Shop</a>
         <a href="/login" className="ml-4 bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded shadow hover:scale-105 transition-transform ring-4 ring-vr-pink/40 ring-offset-2 ring-offset-black animate-pulse">
           Log In
         </a>
@@ -70,6 +73,7 @@ const NavBar = () => {
             <a href="/dashboard" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Dashboard</a>
             <a href="/scanner" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Sigma Scanner</a>
             <a href="/leaderboard" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Leaderboard</a>
+            <a href="/shop" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Shop</a>
             <a href="/login" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Log In</a>
           </div>
         )}
