@@ -146,9 +146,9 @@ export default function LandingPage() {
 						<p className="text-white/80">Climb the leaderboard and compete with other sigma warriors.</p>
 					</div>
 				</div>
-				<div className="w-full max-w-5xl overflow-x-auto hide-scrollbar">
+				<div className="w-full max-w-5xl overflow-x-auto hide-scrollbar mt-8">
 					<div
-						className="flex gap-8 snap-x snap-mandatory px-2"
+						className="flex gap-8 snap-x snap-mandatory px-2 md:justify-center"
 						style={{ scrollbarWidth: "thin" }}
 					>
 						{[

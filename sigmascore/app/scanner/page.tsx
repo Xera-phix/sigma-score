@@ -77,10 +77,15 @@ export default function ScannerPage() {
         body: JSON.stringify({ image: selectedImage }),
       });
 
+      if (!response.ok) {
+        setLoading(false);
+        return;
+      }
+
       const data = await response.json();
       
       if (data.error) {
-        // Do not set error message in UI
+        setLoading(false);
         return;
       }
 
@@ -118,7 +123,6 @@ export default function ScannerPage() {
       await updateAllRankings();
 
     } catch (err) {
-      // Do not set error message in UI
       console.error('Error analyzing image:', err);
     } finally {
       setLoading(false);
@@ -156,6 +160,10 @@ export default function ScannerPage() {
               <button
                 type="button"
                 onClick={async () => {
+                  if (typeof window === "undefined" || typeof navigator === "undefined") {
+                    alert("Camera only available in browser.");
+                    return;
+                  }
                   try {
                     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
                     const video = document.createElement('video');
