@@ -1,6 +1,6 @@
 "use client";
 // ...existing code from template/pages/Dashboard.tsx...
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import NavBar from "../../components/ui/NavBar";
 import { auth } from "../../lib/firebase";
 import { getUserData, getLeaderboard } from "../../lib/firestore";
@@ -74,6 +74,53 @@ const Dashboard = () => {
       )
     );
   };
+
+  // Animate glows to float around the screen (use setInterval for smoother, less laggy animation)
+  const animationRef = useRef<NodeJS.Timeout | null>(null);
+  useEffect(() => {
+    let t = 0;
+    function animate() {
+      t += 0.016;
+      setGlows([
+        {
+          x: -320 + Math.sin(t) * 420,
+          y: -320 + Math.cos(t * 0.7) * 320,
+          size: 500,
+          color: 'bg-purple-700',
+          blur: 'blur-3xl',
+          opacity: 'opacity-40',
+        },
+        {
+          x: 420 + Math.cos(t * 0.8) * 500,
+          y: 380 + Math.sin(t * 1.1) * 340,
+          size: 400,
+          color: 'bg-purple-500',
+          blur: 'blur-2xl',
+          opacity: 'opacity-30',
+        },
+        {
+          x: -400 + Math.sin(t * 0.6) * 360,
+          y: 420 + Math.cos(t * 0.9) * 380,
+          size: 420,
+          color: 'bg-fuchsia-700',
+          blur: 'blur-3xl',
+          opacity: 'opacity-30',
+        },
+        {
+          x: 360 + Math.cos(t * 0.5) * 380,
+          y: -400 + Math.sin(t * 0.7) * 350,
+          size: 360,
+          color: 'bg-vr-pink',
+          blur: 'blur-2xl',
+          opacity: 'opacity-20',
+        },
+      ]);
+    }
+    animationRef.current = setInterval(animate, 16); // ~60fps
+    return () => {
+      if (animationRef.current) clearInterval(animationRef.current);
+    };
+  }, []);
 
   if (loading) {
     return (
