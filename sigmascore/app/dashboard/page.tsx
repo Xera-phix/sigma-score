@@ -22,12 +22,12 @@ const Dashboard = () => {
     { x: 0, y: 0, size: 260, color: 'bg-vr-pink', blur: 'blur-2xl', opacity: 'opacity-20' },
   ]);
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
-  // Daily tasks example
-  const dailyTasks = [
-    { task: "Complete 3 aura challenges", done: false, points: 50 },
-    { task: "Log in to Sigma Sanctuary", done: true, points: 10 },
-    { task: "Share your score on social media", done: false, points: 25 },
-  ];
+  // Daily tasks state
+  const [dailyTasks, setDailyTasks] = useState([
+    { task: "mew for 10 min, no mouth breathing", done: false, points: 50 },
+    { task: "send a mewing selfie (bonus: confused friend)", done: false, points: 25 },
+    { task: "rate your jawline in the mirror", done: false, points: 10 },
+  ]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -66,6 +66,15 @@ const Dashboard = () => {
     return "Newbie";
   };
 
+  // Handler to toggle task completion
+  const handleToggleTask = (idx: number) => {
+    setDailyTasks(tasks =>
+      tasks.map((t, i) =>
+        i === idx ? { ...t, done: !t.done } : t
+      )
+    );
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-vr-gradient relative overflow-hidden">
@@ -102,9 +111,9 @@ const Dashboard = () => {
         />
       ))}
       <NavBar />
-      <div className="relative z-10 max-w-5xl mx-auto pt-32 pb-16 px-4">
+      <div className="relative z-10 max-w-5xl mx-auto pt-32 pb-16 px-4 flex flex-col gap-10">
         {/* Sigma Score & Rank - Full Top Row */}
-        <section className="bg-gradient-to-b from-[#2a003f] to-vr-purple border-0 rounded-2xl shadow-2xl p-8 mb-10 flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-xl">
+        <section className="bg-gradient-to-b from-[#2a003f] to-vr-purple border-0 rounded-2xl shadow-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-xl">
           <div className="flex items-center gap-6">
             <img src={profilePic} alt="Profile" className="w-28 h-28 rounded-full border-4 border-vr-pink object-cover bg-black/30 shadow-xl" />
             <div>
@@ -114,47 +123,116 @@ const Dashboard = () => {
           </div>
           <div className="flex items-center" style={{ marginLeft: '-32px' }}>
             <div>
-              <h3 className="font-orbitron text-2xl text-white font-bold mb-2">Rank</h3>
+              <h3 className="font-orbitron text-3xl text-white font-bold mb-2">Rank</h3>
               <div className="text-4xl font-bold text-vr-purple drop-shadow">{sigmaRank}</div>
             </div>
           </div>
         </section>
         {/* Leaderboard & Scanner Side by Side */}
-        <div className="flex flex-col md:flex-row gap-8 mb-10">
-          <section className="flex-1 bg-gradient-to-b from-[#2a003f] to-vr-purple border-0 rounded-2xl shadow-xl p-8 backdrop-blur-xl">
+        <div className="flex flex-col md:flex-row gap-8">
+          <section className="flex-1 bg-gradient-to-b from-[#2a003f] to-vr-purple border-0 rounded-2xl shadow-xl p-8 backdrop-blur-xl flex flex-col justify-between">
             <div className="flex items-center mb-6">
-              <h2 className="font-orbitron text-2xl text-white font-bold flex-1">
-                Sigma Leaderboard
+              <h2 className="font-orbitron text-3xl text-white font-extrabold tracking-wide flex-1 drop-shadow-lg">
+                Leaderboard
               </h2>
               <div className="flex-1 flex justify-end">
                 <button
                   className="bg-gradient-to-r from-vr-purple to-vr-pink text-white font-bold px-4 py-2 rounded-lg shadow ring-2 ring-vr-pink/40 ring-offset-2 ring-offset-black hover:scale-105 transition-transform"
                   onClick={() => window.location.href = '/leaderboard'}
                 >
-                  Visit Leaderboard
+                  See All
                 </button>
               </div>
             </div>
-            <ol className="space-y-3">
-              {leaderboard.map((entry, i) => (
-                <li
-                  key={entry.id || entry.name || i}
-                  className={`flex items-center justify-between px-4 py-2 rounded-lg transition-all duration-300 ${
-                    entry.name === userName
-                      ? "bg-vr-pink/30 text-white font-bold border-0 shadow"
-                      : "bg-white/5 text-white/80 border-0"
-                  }`}
-                >
-                  <span>{i + 1}. {entry.name}</span>
-                  <span>{entry.score}</span>
-                </li>
-              ))}
-            </ol>
+            <div className="rounded-2xl bg-gradient-to-br from-vr-purple/40 to-black/60 border border-vr-pink/30 shadow-xl p-4 backdrop-blur-md">
+              <ol className="space-y-2">
+                {leaderboard && leaderboard.length > 0 ? (() => {
+                  // Sort and find user index
+                  const sorted = [...leaderboard].sort((a, b) => (b.sigmaScore ?? b.score ?? 0) - (a.sigmaScore ?? a.score ?? 0));
+                  const userIdx = sorted.findIndex(
+                    entry =>
+                      entry.displayName === userName ||
+                      entry.name === userName ||
+                      entry.email === user?.email
+                  );
+                  let start = Math.max(0, userIdx - 1);
+                  let end = Math.min(sorted.length, userIdx + 2);
+                  if (userIdx === -1) {
+                    start = 0;
+                    end = Math.min(sorted.length, 3);
+                  }
+                  return sorted.slice(start, end).map((entry, i) => {
+                    const realRank = sorted.indexOf(entry) + 1;
+                    const isUser =
+                      entry.displayName === userName ||
+                      entry.name === userName ||
+                      entry.email === user?.email;
+                    // Rank badge
+                    let badge = null;
+                    if (realRank === 1) badge = <span className="ml-2 text-yellow-400 text-xl">🥇</span>;
+                    else if (realRank === 2) badge = <span className="ml-2 text-gray-300 text-xl">🥈</span>;
+                    else if (realRank === 3) badge = <span className="ml-2 text-orange-400 text-xl">🥉</span>;
+                    return (
+                      <li
+                        key={entry.id || entry.name || i}
+                        className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 group
+                          ${isUser
+                            ? "bg-vr-pink/30 text-white font-bold border border-vr-pink/40 shadow-lg ring-2 ring-vr-pink/30"
+                            : "bg-white/5 text-white/80 border border-white/10"
+                          }
+                        `}
+                        style={{
+                          boxShadow: isUser
+                            ? "0 2px 16px 0 #ff5ec7a0"
+                            : undefined,
+                          position: "relative"
+                        }}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="font-orbitron text-lg w-8 text-center text-vr-pink">{realRank}</span>
+                          <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-lg
+                            ${isUser ? "bg-vr-pink text-white" : "bg-vr-purple/40 text-white/80"}
+                            shadow-md border-2 border-vr-pink/40`}>
+                            {(entry.displayName || entry.name || entry.email || "A").charAt(0).toUpperCase()}
+                          </div>
+                          <span className={`ml-2 ${isUser ? "text-white" : "text-white/90"} font-semibold`}>
+                            {entry.displayName || entry.name || entry.email || "Anonymous"}
+                            {isUser && (
+                              <span className="ml-2 text-vr-pink text-xs font-semibold animate-pulse">(you)</span>
+                            )}
+                            {badge}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-vr-pink text-xl">{entry.sigmaScore ?? entry.score ?? 0}</span>
+                          <div className="w-16 h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div
+                              className="h-2 rounded-full bg-gradient-to-r from-vr-pink to-vr-purple"
+                              style={{
+                                width: `${Math.min(100, (entry.sigmaScore ?? entry.score ?? 0))}%`,
+                                transition: "width 0.5s"
+                              }}
+                            ></div>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  });
+                })() : (
+                  <li className="text-white/60 px-4 py-2">no leaderboard data yet</li>
+                )}
+              </ol>
+              {leaderboard && leaderboard.length > 0 && (
+                <div className="mt-4 text-xs text-white/60 text-center">
+                  showing {Math.min(leaderboard.length, 3)} of {leaderboard.length} users
+                </div>
+              )}
+            </div>
           </section>
           {/* Scanner Column */}
-          <div className="md:w-[340px] w-full flex-shrink-0 mt-10 md:mt-0 flex md:items-center">
+          <div className="md:w-[340px] w-full flex-shrink-0 flex md:items-center">
             <section className="bg-gradient-to-b from-[#2a003f] to-vr-purple border-0 rounded-2xl shadow-xl p-8 flex flex-col items-center justify-center h-full w-full backdrop-blur-xl">
-              <h2 className="font-orbitron text-2xl text-white font-bold mb-4">Sigma Scanner</h2>
+              <h2 className="font-orbitron text-3xl text-white font-bold mb-4">Sigma Scanner</h2>
               <p className="text-white/80 mb-6 text-center max-w-md">Scan your aura and get personalized sigma insights. Ready to see your true potential?</p>
               <button
                 className="bg-gradient-to-r from-purple-500 via-vr-pink to-pink-500 text-white font-bold px-8 py-3 rounded-xl text-lg shadow-lg hover:scale-105 transition-transform"
@@ -166,16 +244,37 @@ const Dashboard = () => {
           </div>
         </div>
         {/* Daily Tasks */}
-        <section className="bg-gradient-to-b from-[#2a003f] to-vr-purple border-0 rounded-2xl shadow-xl p-8 mb-10 backdrop-blur-xl">
-          <h2 className="font-orbitron text-2xl text-white font-bold mb-6">Daily Tasks</h2>
+        <section className="bg-gradient-to-b from-[#2a003f] to-vr-purple border-0 rounded-2xl shadow-xl p-8 backdrop-blur-xl w-full mt-0">
+          <h2 className="font-orbitron text-3xl text-white font-bold mb-6">Daily Tasks</h2>
           <ul className="space-y-3">
             {dailyTasks.map((t, i) => (
-              <li key={i} className="flex items-center gap-3 justify-between">
+              <li
+                key={i}
+                className={`flex items-center gap-3 justify-between transition-all duration-300 ${
+                  t.done ? "bg-vr-pink/10" : "bg-white/5"
+                } rounded-lg px-3 py-2 group`}
+              >
                 <div className="flex items-center gap-3">
-                  <input type="checkbox" checked={t.done} readOnly className="accent-vr-pink w-5 h-5" />
-                  <span className={t.done ? "line-through text-white/50" : "text-white"}>{t.task}</span>
+                  <button
+                    aria-label={t.done ? "Mark as incomplete" : "Mark as complete"}
+                    onClick={() => handleToggleTask(i)}
+                    className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200
+                      ${t.done ? "border-vr-pink bg-vr-pink/80" : "border-white/40 bg-black/30"}
+                      group-hover:scale-110 focus:outline-none focus:ring-2 focus:ring-vr-pink`}
+                  >
+                    {t.done ? (
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    ) : null}
+                  </button>
+                  <span className={`transition-colors duration-200 ${t.done ? "line-through text-white/50" : "text-white"}`}>
+                    {t.task}
+                  </span>
                 </div>
-                <span className="text-vr-pink font-bold text-lg">+{t.points}</span>
+                <span className={`text-vr-pink font-bold text-lg transition-all duration-200 ${t.done ? "opacity-40" : "opacity-100"}`}>
+                  +{t.points}
+                </span>
               </li>
             ))}
           </ul>
