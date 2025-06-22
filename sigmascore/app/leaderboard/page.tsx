@@ -159,7 +159,7 @@ const LeaderboardPage = () => {
           </table>
         </div>
 
-        {leaderboardData.length === 0 && (
+        {leaderboardData.length === 0 && !user && (
           <div className="text-center py-12">
             <p className="text-white/60 text-lg">No users found. Be the first to join the leaderboard!</p>
             <button 

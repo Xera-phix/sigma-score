@@ -9,11 +9,13 @@ const NavBar = () => {
   const [user, setUser] = useState<User | null>(null);
   const [showNav, setShowNav] = useState(true);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const lastScrollY = useRef(typeof window !== 'undefined' ? window.scrollY : 0);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      setAuthLoading(false);
     });
     return () => unsubscribe();
   }, []);
@@ -49,15 +51,19 @@ const NavBar = () => {
       {/* 🌐 Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-8">
         <a href="/" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Home</a>
-        <a href="/dashboard" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Dashboard</a>
-        <a href="/scanner" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Sigma Scanner</a>
+        {user && (
+          <a href="/dashboard" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Dashboard</a>
+        )}
+        {user && (
+          <a href="/scanner" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Sigma Scanner</a>
+        )}
         <a href="/leaderboard" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Leaderboard</a>
-        <a href="/shop" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Shop</a>
-        <a href="/login" className="ml-4 bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded shadow hover:scale-105 transition-transform ring-4 ring-vr-pink/40 ring-offset-2 ring-offset-black animate-pulse">
-          Log In
-        </a>
+        {user && (
+          <a href="/shop" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Shop</a>
+        )}
         
-        {user ? (
+        {/* Only show login/logout UI after auth state is loaded */}
+        {!authLoading && (user ? (
           <div className="relative">
             <button onClick={() => setShowUserMenu(!showUserMenu)} className="w-10 h-10 rounded-full bg-gradient-to-br from-vr-pink to-vr-red flex items-center justify-center text-white font-bold text-lg ring-4 ring-vr-pink/40 ring-offset-2 ring-offset-black">
               {user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
@@ -71,10 +77,10 @@ const NavBar = () => {
             )}
           </div>
         ) : (
-          <a href="/login" className="ml-4 bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded shadow hover:scale-105 transition-transform">
+          <a href="/login" className="ml-4 bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded shadow-lg hover:scale-105 transition-transform ring-4 ring-vr-pink/60 ring-offset-2 ring-offset-black animate-pulse focus:outline-none focus:ring-4 focus:ring-vr-pink/80">
             Log In
           </a>
-        )}
+        ))}
       </nav>
 
       {/* 📱 Mobile Navigation */}
@@ -116,16 +122,22 @@ const NavBar = () => {
         {menuOpen && (
           <div className="absolute right-4 top-16 bg-black/90 backdrop-blur-xl rounded shadow-lg py-4 px-6 flex flex-col space-y-4 z-30 min-w-[150px] border border-white/10">
             <a href="/" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Home</a>
-            <a href="/dashboard" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Dashboard</a>
-            <a href="/scanner" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Sigma Scanner</a>
+            {user && (
+              <a href="/dashboard" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Dashboard</a>
+            )}
+            {user && (
+              <a href="/scanner" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Sigma Scanner</a>
+            )}
             <a href="/leaderboard" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Leaderboard</a>
-            <a href="/shop" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Shop</a>
-            <a href="/login" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Log In</a>
-            {user ? (
+            {user && (
+              <a href="/shop" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Shop</a>
+            )}
+            {/* Only show login/logout UI after auth state is loaded */}
+            {!authLoading && (user ? (
               <button onClick={handleSignOut} className="text-white font-bold text-left hover:text-vr-pink transition-colors">Sign Out</button>
             ) : (
               <a href="/login" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Log In</a>
-            )}
+            ))}
           </div>
         )}
       </div>
