@@ -77,7 +77,7 @@ const Dashboard = () => {
           </section>
           {/* Scanner Column */}
           <div className="md:w-[340px] w-full flex-shrink-0 mt-10 md:mt-0 flex md:items-center">
-            <section className="bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-8 flex flex-col items-center h-full w-full">
+            <section className="bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-8 flex flex-col items-center justify-center h-full w-full">
               <h2 className="font-orbitron text-2xl text-white font-bold mb-4">Sigma Scanner</h2>
               <p className="text-white/80 mb-6 text-center max-w-md">Scan your aura and get personalized sigma insights. Ready to see your true potential?</p>
               <button
