@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "firebase": "^11.9.1",
-    "react-transition-group": "^4.4.5"
-  }
-}
