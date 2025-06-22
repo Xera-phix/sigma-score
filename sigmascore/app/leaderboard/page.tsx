@@ -1,57 +1,59 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../../components/ui/NavBar";
+import { auth } from "../../lib/firebase";
+import { getLeaderboard, getUserRank } from "../../lib/firestore";
 
 const LeaderboardPage = () => {
-  const [selectedBoard, setSelectedBoard] = useState("sigma");
+  const [leaderboardData, setLeaderboardData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
+  const [userRank, setUserRank] = useState<number>(0);
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
 
-  const leaderboards = {
-    sigma: [
-      { name: "Gigachad", auraPoints: 2000, sigmaStreak: 52 },
-      { name: "SigmaMaster", auraPoints: 1800, sigmaStreak: 50 },
-      { name: "You", auraPoints: 1420, sigmaStreak: 44 },
-      { name: "AlphaWolf", auraPoints: 1200, sigmaStreak: 40 },
-      { name: "BetaTester", auraPoints: 900, sigmaStreak: 30 },
-    ],
-    alpha: [
-      { name: "AlphaKing", auraPoints: 1500, sigmaStreak: 48 },
-      { name: "You", auraPoints: 1250, sigmaStreak: 38 },
-      { name: "WolfPack", auraPoints: 1100, sigmaStreak: 35 },
-      { name: "BetaBlocker", auraPoints: 950, sigmaStreak: 28 },
-      { name: "ChadClone", auraPoints: 850, sigmaStreak: 25 },
-    ],
-    beta: [
-      { name: "DarkHorse", auraPoints: 1750, sigmaStreak: 51 },
-      { name: "You", auraPoints: 1600, sigmaStreak: 49 },
-      { name: "Underdog", auraPoints: 1300, sigmaStreak: 39 },
-      { name: "LastPick", auraPoints: 1000, sigmaStreak: 30 },
-      { name: "Survivor", auraPoints: 800, sigmaStreak: 22 },
-    ],
-    omega: [
-      { name: "ShadowWalker", auraPoints: 1700, sigmaStreak: 47 },
-      { name: "You", auraPoints: 1600, sigmaStreak: 46 },
-      { name: "NightWolf", auraPoints: 1300, sigmaStreak: 35 },
-      { name: "Ghost", auraPoints: 1000, sigmaStreak: 30 },
-      { name: "LoneWolf", auraPoints: 850, sigmaStreak: 25 },
-    ],
-    gamma: [
-      { name: "Zenith", auraPoints: 1650, sigmaStreak: 45 },
-      { name: "You", auraPoints: 1500, sigmaStreak: 43 },
-      { name: "Pulse", auraPoints: 1250, sigmaStreak: 36 },
-      { name: "Flicker", auraPoints: 980, sigmaStreak: 28 },
-      { name: "Ember", auraPoints: 790, sigmaStreak: 20 },
-    ],
-    delta: [
-      { name: "Abyss", auraPoints: 1600, sigmaStreak: 42 },
-      { name: "You", auraPoints: 1500, sigmaStreak: 40 },
-      { name: "Dusk", auraPoints: 1200, sigmaStreak: 33 },
-      { name: "Gloom", auraPoints: 950, sigmaStreak: 27 },
-      { name: "Wanderer", auraPoints: 770, sigmaStreak: 19 },
-    ],
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        setUser(user);
+        // Fetch leaderboard data
+        const data = await getLeaderboard(50); // Get top 50 users
+        setLeaderboardData(data);
+        
+        // Get user's rank
+        const rank = await getUserRank(user.uid);
+        setUserRank(rank);
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const getRankIcon = (rank: number) => {
+    if (rank === 1) return "🥇";
+    if (rank === 2) return "🥈";
+    if (rank === 3) return "🥉";
+    return "🏅";
   };
 
-  const currentLeaderboard = leaderboards[selectedBoard];
+  const getRankClass = (rank: number) => {
+    if (rank === 1) return "bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold";
+    if (rank === 2) return "bg-gradient-to-r from-gray-300 to-gray-500 text-black font-bold";
+    if (rank === 3) return "bg-gradient-to-r from-orange-400 to-orange-600 text-black font-bold";
+    return "";
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black relative overflow-hidden">
+        <NavBar />
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-white text-xl">Loading leaderboard...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
@@ -63,6 +65,7 @@ const LeaderboardPage = () => {
       <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-purple-800 rounded-full blur-3xl opacity-30 -z-10" />
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-600 rounded-full blur-2xl opacity-20 -z-10" />
 
+      <div className="max-w-6xl mx-auto pt-28 pb-20 px-4">
       <div className="max-w-5xl mx-auto pt-12 pb-20 px-4">
 
 
@@ -98,59 +101,122 @@ const LeaderboardPage = () => {
         </section>
 
         <section className="mb-10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white">
-            {selectedBoard.charAt(0).toUpperCase() + selectedBoard.slice(1)} Leaderboard
-          </h1>
-          <select
-            className="bg-purple-800/30 text-white px-5 py-2 rounded-xl border border-purple-500/40 shadow-md hover:bg-purple-700/40 transition backdrop-blur-md"
-            value={selectedBoard}
-            onChange={(e) => setSelectedBoard(e.target.value)}
-          >
-            {Object.keys(leaderboards).map((key) => (
-              <option key={key} value={key}>
-                {key.charAt(0).toUpperCase() + key.slice(1)} Leaderboard
-              </option>
-            ))}
-          </select>
+          <div>
+            <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-2">
+              Sigma Leaderboard
+            </h1>
+            <p className="text-white/60">Top {leaderboardData.length} Sigma Warriors</p>
+          </div>
+          {user && userRank > 0 && (
+            <div className="bg-purple-900/50 border border-purple-500/30 rounded-xl p-4 text-center">
+              <p className="text-white/80 text-sm">Your Rank</p>
+              <p className="text-2xl font-bold text-vr-pink">#{userRank}</p>
+            </div>
+          )}
         </section>
 
         <div className="overflow-x-auto rounded-2xl bg-gradient-to-br from-purple-900/80 to-black/80 border border-purple-500/30 shadow-2xl backdrop-blur-md">
           <table className="min-w-full text-left text-white text-lg font-medium">
             <thead>
-              <tr className="bg-black text-white">
-                <th className="px-6 py-4">🏅 Rank</th>
-                <th className="px-6 py-4">👤 Name</th>
-                <th className="px-6 py-4">🔮 Aura Points</th>
-                <th className="px-6 py-4">🔥 Sigma Streak</th>
+              <tr className="bg-black/50 text-white border-b border-purple-500/30">
+                <th className="px-6 py-4">Rank</th>
+                <th className="px-6 py-4">User</th>
+                <th className="px-6 py-4">Sigma Score</th>
+                <th className="px-6 py-4">Level</th>
+                <th className="px-6 py-4">Scans</th>
+                <th className="px-6 py-4">Joined</th>
               </tr>
             </thead>
             <tbody>
-              {currentLeaderboard.map((entry, index) => (
-                <tr
-                  key={entry.name}
-                  className={`transition duration-200 ${
-                    entry.name === "You"
-                      ? "bg-purple-700/40 font-bold text-white"
-                      : "hover:bg-purple-600/20"
-                  }`}
-                >
-                  <td className="px-6 py-4">{index + 1}</td>
-                  <td className="px-6 py-4">{entry.name}</td>
-                  <td className="px-6 py-4">{entry.auraPoints}</td>
-                  <td className="px-6 py-4">{entry.sigmaStreak}</td>
-                </tr>
-              ))}
+              {leaderboardData.map((entry, index) => {
+                const rank = index + 1;
+                const getLevel = (score: number) => {
+                  if (score >= 80) return "Legend";
+                  if (score >= 60) return "Pro";
+                  if (score >= 40) return "Elite";
+                  if (score >= 20) return "Warrior";
+                  if (score >= 10) return "Initiate";
+                  return "Newbie";
+                };
+                
+                return (
+                  <tr
+                    key={entry.id}
+                    className={`transition duration-200 border-b border-purple-500/10 ${
+                      entry.uid === user?.uid
+                        ? "bg-purple-700/40 font-bold text-white"
+                        : "hover:bg-purple-600/20"
+                    }`}
+                  >
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">{getRankIcon(rank)}</span>
+                        <span className={getRankClass(rank)}>#{rank}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-gradient-to-br from-vr-pink to-vr-red rounded-full flex items-center justify-center text-white font-bold">
+                          {(entry.displayName || entry.firstName || "A").charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <p className="font-semibold">
+                            {entry.displayName || `${entry.firstName} ${entry.lastName}` || "Anonymous"}
+                          </p>
+                          <p className="text-white/60 text-sm">{entry.email}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl font-bold text-vr-pink">{entry.sigmaScore}</span>
+                        <div className="w-16 bg-white/20 rounded-full h-2">
+                          <div 
+                            className="bg-gradient-to-r from-vr-pink to-vr-red h-2 rounded-full"
+                            style={{ width: `${entry.sigmaScore}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="px-3 py-1 bg-purple-600/30 border border-purple-500/50 rounded-full text-sm">
+                        {getLevel(entry.sigmaScore)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      {entry.totalScans || 0}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-white/60">
+                      {entry.createdAt ? new Date(entry.createdAt.toDate()).toLocaleDateString() : "N/A"}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
 
+        {leaderboardData.length === 0 && !user && (
+          <div className="text-center py-12">
+            <p className="text-white/60 text-lg">No users found. Be the first to join the leaderboard!</p>
+            <button 
+              className="mt-4 bg-vr-pink text-white px-6 py-2 rounded-lg hover:bg-vr-red transition"
+              onClick={() => window.location.href = '/signup'}
+            >
+              Sign Up Now
+            </button>
+          </div>
+        )}
+
         <div className="mt-12 text-sm text-purple-300 text-center">
           Last updated:{" "}
           <span className="text-white">
-            {new Date().toLocaleDateString(undefined, {
+            {lastUpdated.toLocaleDateString(undefined, {
               year: "numeric",
               month: "short",
               day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit"
             })}
           </span>
         </div>

@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users collection - all authenticated users can read, but only update/create their own data
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow update: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Scans collection - users can read/write/update/delete their own scans
+    match /scans/{scanId} {
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+    
+    // Leaderboard collection - all authenticated users can read, only update their own
+    match /leaderboard/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Global stats collection - read-only for all authenticated users
+    match /stats/{document=**} {
+      allow read: if request.auth != null;
+      allow write: if false; // Only admin can write (via admin panel or backend)
+    }
+  }
+}

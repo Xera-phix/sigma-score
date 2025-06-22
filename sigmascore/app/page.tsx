@@ -124,11 +124,26 @@ export default function LandingPage() {
 					})}
 				</div>
 			</section>
-			{/* Testimonials Section */}
+			{/* Community Stats Section */}
 			<section className="w-full flex flex-col items-center justify-center mb-24 px-4">
 				<h2 className="text-2xl md:text-3xl font-bold text-white mb-8">
-					What Sigmas Are Saying
+					Join the Sigma Community
 				</h2>
+				<div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-8">
+					<div className="bg-gradient-to-br from-purple-900/80 to-black/80 border border-purple-500/30 rounded-2xl shadow-lg p-6 text-center">
+						<div className="text-4xl mb-2">🚀</div>
+						<h3 className="text-xl font-bold text-white mb-2">Start Your Journey</h3>
+						<p className="text-white/80">Create your account and begin your sigma transformation today.</p>
+					</div>
+					<div className="bg-gradient-to-br from-purple-900/80 to-black/80 border border-purple-500/30 rounded-2xl shadow-lg p-6 text-center">
+						<div className="text-4xl mb-2">📊</div>
+						<h3 className="text-xl font-bold text-white mb-2">Track Progress</h3>
+						<p className="text-white/80">Monitor your sigma score and see your growth over time.</p>
+					</div>
+					<div className="bg-gradient-to-br from-purple-900/80 to-black/80 border border-purple-500/30 rounded-2xl shadow-lg p-6 text-center">
+						<div className="text-4xl mb-2">🏆</div>
+						<h3 className="text-xl font-bold text-white mb-2">Compete & Win</h3>
+						<p className="text-white/80">Climb the leaderboard and compete with other sigma warriors.</p>
 				<div className="w-full max-w-5xl overflow-x-auto hide-scrollbar">
 					<div
 						className="flex gap-8 snap-x snap-mandatory px-2"
@@ -201,7 +216,6 @@ export default function LandingPage() {
 						</a>
 					</div>
 				</div>
-				<span className="block w-full text-center text-xs text-purple-400 mt-8">&copy; {new Date().getFullYear()} SigmaScore. All rights reserved.</span>
 			</footer>
 		</div>
 	);

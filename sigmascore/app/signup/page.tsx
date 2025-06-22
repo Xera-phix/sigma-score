@@ -2,6 +2,9 @@
 // ...existing code from template/pages/SignUp.tsx...
 import React, { useState } from "react";
 import NavBar from "../../components/ui/NavBar";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../../lib/firebase";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -11,16 +14,48 @@ const SignUp = () => {
   const [error, setError] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!firstName || !lastName || !email || !password) {
       setError("Please fill in all fields.");
       return;
     }
     setError("");
-    // Add sign up logic here
-    localStorage.setItem('isLoggedIn', 'true');
-    window.location.href = '/dashboard';
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      // Update profile with display name
+      await updateProfile(user, {
+        displayName: `${firstName} ${lastName}`
+      });
+
+      // Create user document in Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      await setDoc(userDocRef, {
+        uid: user.uid,
+        email: user.email,
+        firstName: firstName,
+        lastName: lastName,
+        displayName: `${firstName} ${lastName}`,
+        sigmaScore: 0,
+        ranking: 0,
+        totalScans: 0,
+        createdAt: new Date(),
+        lastLoginAt: new Date(),
+        isActive: true,
+        profileCompleted: false
+      });
+
+      // Save user info to localStorage for now (for dashboard display)
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userEmail', user.email || '');
+      localStorage.setItem('userName', `${firstName} ${lastName}`);
+      localStorage.setItem('userPhoto', user.photoURL || '');
+      window.location.href = '/dashboard';
+    } catch (err: any) {
+      setError(err.message || 'Sign up failed.');
+    }
   };
 
   return (

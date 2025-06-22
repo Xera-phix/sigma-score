@@ -2,6 +2,9 @@
 // ...existing code from template/pages/Login.tsx...
 import React, { useState } from "react";
 import NavBar from "../../components/ui/NavBar";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { doc, updateDoc } from "firebase/firestore";
+import { auth, db } from "../../lib/firebase";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,16 +12,32 @@ const Login = () => {
   const [error, setError] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       setError("Please enter both email and password.");
       return;
     }
     setError("");
-    // Add authentication logic here
-    localStorage.setItem('isLoggedIn', 'true');
-    window.location.href = '/dashboard';
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      // Update lastLoginAt in Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      await updateDoc(userDocRef, {
+        lastLoginAt: new Date()
+      });
+
+      // Save user info to localStorage for now (for dashboard display)
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userEmail', user.email || '');
+      localStorage.setItem('userName', user.displayName || '');
+      localStorage.setItem('userPhoto', user.photoURL || '');
+      window.location.href = '/dashboard';
+    } catch (err: any) {
+      setError(err.message || 'Login failed.');
+    }
   };
 
   return (

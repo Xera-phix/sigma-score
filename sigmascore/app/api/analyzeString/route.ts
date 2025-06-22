@@ -7,6 +7,30 @@ interface AnalyzeRequestBody {
   image: string;
 }
 
+interface SigmaAnalysis {
+  faceScores: {
+    chiseledJawline: number;
+    hunterEyes: number;
+    chinLength: number;
+    pursedLips: number;
+    gonialAngle: number;
+    highCheekbones: number;
+    thickEyebrows: number;
+    healthySigmaHair: number;
+    clearSkin: number;
+  };
+  bodyScores?: {
+    broadShoulders: number;
+    taperedWaist: number;
+    posture: number;
+    heightAndProportions: number;
+    lowBodyFatAndMuscular: number;
+  };
+  overallSigmaScore: number;
+  sigmaLevel: string;
+  analysis: string;
+}
+
 export async function POST(request: NextRequest) {
   const { image }: AnalyzeRequestBody = await request.json();
 
@@ -28,38 +52,77 @@ export async function POST(request: NextRequest) {
       },
     ];
 
-    const prompt = `Given the image of a person, rate their looksmaxxing and how sigma male they are based on the given criteria.
+    const prompt = `Analyze this image of a person and provide a comprehensive sigma male rating. 
 
-      Evaluate each of the criteria from a score of 0-100.
-      Do not include any justification for your rating, only include the number.
+    Please respond in the following JSON format only (no other text):
+    
+    {
+      "faceScores": {
+        "chiseledJawline": [0-100],
+        "hunterEyes": [0-100], 
+        "chinLength": [0-100],
+        "pursedLips": [0-100],
+        "gonialAngle": [0-100],
+        "highCheekbones": [0-100],
+        "thickEyebrows": [0-100],
+        "healthySigmaHair": [0-100],
+        "clearSkin": [0-100]
+      },
+      "bodyScores": {
+        "broadShoulders": [0-100],
+        "taperedWaist": [0-100], 
+        "posture": [0-100],
+        "heightAndProportions": [0-100],
+        "lowBodyFatAndMuscular": [0-100]
+      },
+      "overallSigmaScore": [0-100],
+      "sigmaLevel": "Newbie|Sigma Initiate|Sigma Warrior|Sigma Elite|Sigma Pro|Sigma Legend",
+      "analysis": "Brief 2-3 sentence analysis of the person's sigma traits and areas for improvement"
+    }
 
-      There will be two types of images:
-
-      If the image is only of a person's face, please use only the following criteria:
-      - chiseled jawline
-      - hunter eyes
-      - chin length
-      - pursed lips
-      - gonial angle
-      - high cheekbones
-      - thick eyebrows
-      - healthy sigma hair
-      - clear skin
-
-      If the image includes some body portions apart from the face, also consider the following criteria:
-      - broad shoulders
-      - tapered waist
-      - posture
-      - height and body proportions
-      - low body fat and muscular build
-
-    `;
+    If the image only shows the face, omit the "bodyScores" section entirely.
+    
+    Rate honestly and objectively based on sigma male aesthetics and looksmaxxing standards.`;
     
     const result = await model.generateContent([prompt, ...imageParts]);
     const response = await result.response;
     const text = response.text();
 
-    return NextResponse.json({ text });
+    // Try to parse the JSON response
+    let analysis: SigmaAnalysis;
+    try {
+      // Clean up the response text to extract JSON
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        analysis = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('No JSON found in response');
+      }
+    } catch (parseError) {
+      console.error('Failed to parse Gemini response:', parseError);
+      // Fallback to basic analysis
+      analysis = {
+        faceScores: {
+          chiseledJawline: 50,
+          hunterEyes: 50,
+          chinLength: 50,
+          pursedLips: 50,
+          gonialAngle: 50,
+          highCheekbones: 50,
+          thickEyebrows: 50,
+          healthySigmaHair: 50,
+          clearSkin: 50,
+        },
+        overallSigmaScore: 50,
+        sigmaLevel: "Newbie",
+        analysis: "Analysis could not be completed. Please try again with a clearer image."
+      };
+    }
+
+    return NextResponse.json({ 
+      text: analysis.analysis,
+      analysis: analysis 
+    });
   } catch (error) {
     console.error('Gemini API Error:', error);
     return NextResponse.json({ error: 'Failed to analyze image.' }, { status: 500 });
