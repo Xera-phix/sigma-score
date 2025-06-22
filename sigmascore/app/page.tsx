@@ -144,6 +144,8 @@ export default function LandingPage() {
 						<div className="text-4xl mb-2">🏆</div>
 						<h3 className="text-xl font-bold text-white mb-2">Compete & Win</h3>
 						<p className="text-white/80">Climb the leaderboard and compete with other sigma warriors.</p>
+					</div>
+				</div>
 				<div className="w-full max-w-5xl overflow-x-auto hide-scrollbar">
 					<div
 						className="flex gap-8 snap-x snap-mandatory px-2"

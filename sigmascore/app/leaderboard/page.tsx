@@ -66,10 +66,7 @@ const LeaderboardPage = () => {
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-600 rounded-full blur-2xl opacity-20 -z-10" />
 
       <div className="max-w-6xl mx-auto pt-28 pb-20 px-4">
-      <div className="max-w-5xl mx-auto pt-12 pb-20 px-4">
-
-
-      <section className="relative mt-20 mb-16 p-6 rounded-2xl border border-white/10 shadow overflow-hidden">
+        <section className="relative mt-20 mb-16 p-6 rounded-2xl border border-white/10 shadow overflow-hidden">
 
           {/* Background Blob */}
           <div className="absolute -top-32 -left-32 w-[900px] h-[400px] bg-purple-700 opacity-40 rounded-full blur-3xl z-0" />

@@ -57,7 +57,9 @@ const NavBar = () => {
         {user && (
           <a href="/scanner" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Sigma Scanner</a>
         )}
-        <a href="/leaderboard" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Leaderboard</a>
+        {user && (
+          <a href="/leaderboard" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Leaderboard</a>
+        )}
         {user && (
           <a href="/shop" className="text-white/90 hover:text-vr-pink font-semibold transition-colors">Shop</a>
         )}
@@ -86,12 +88,14 @@ const NavBar = () => {
       {/* 📱 Mobile Navigation */}
       <div className="md:hidden flex items-center">
         <div className="flex items-center gap-2">
-          <button
-            className="bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded"
-            onClick={() => window.location.href = '/leaderboard'}
-          >
-            Leaderboard
-          </button>
+          {user && (
+            <button
+              className="bg-gradient-to-r from-vr-pink to-vr-red text-white text-xs font-bold px-6 py-2.5 rounded"
+              onClick={() => window.location.href = '/leaderboard'}
+            >
+              Leaderboard
+            </button>
+          )}
           
           {user ? (
              <button onClick={() => setShowUserMenu(!showUserMenu)} className="w-10 h-10 rounded-full bg-gradient-to-br from-vr-pink to-vr-red flex items-center justify-center text-white font-bold text-lg">
@@ -128,7 +132,9 @@ const NavBar = () => {
             {user && (
               <a href="/scanner" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Sigma Scanner</a>
             )}
-            <a href="/leaderboard" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Leaderboard</a>
+            {user && (
+              <a href="/leaderboard" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Leaderboard</a>
+            )}
             {user && (
               <a href="/shop" className="text-white font-bold text-left hover:text-vr-pink transition-colors">Shop</a>
             )}
