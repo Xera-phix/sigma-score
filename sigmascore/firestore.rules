@@ -8,10 +8,10 @@ service cloud.firestore {
       allow create: if request.auth != null && request.auth.uid == userId;
     }
     
-    // Scans collection - users can read/write their own scans
+    // Scans collection - users can read/write/update/delete their own scans
     match /scans/{scanId} {
       allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
-      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow read, update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
     }
     
     // Leaderboard collection - all authenticated users can read, only update their own
