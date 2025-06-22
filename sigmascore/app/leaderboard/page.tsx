@@ -56,11 +56,47 @@ const LeaderboardPage = () => {
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
       <NavBar />
+      {/* Sigma of the Day Section */}
+
+
       {/* Glow FX */}
       <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-purple-800 rounded-full blur-3xl opacity-30 -z-10" />
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-600 rounded-full blur-2xl opacity-20 -z-10" />
 
-      <div className="max-w-5xl mx-auto pt-28 pb-20 px-4">
+      <div className="max-w-5xl mx-auto pt-12 pb-20 px-4">
+
+
+      <section className="relative mt-20 mb-16 p-6 rounded-2xl border border-white/10 shadow overflow-hidden">
+
+          {/* Background Blob */}
+          <div className="absolute -top-32 -left-32 w-[900px] h-[400px] bg-purple-700 opacity-40 rounded-full blur-3xl z-0" />
+
+          {/* Content */}
+          <div className="relative z-10 flex flex-col lg:flex-row items-center gap-8">
+            {/* Profile Image */}
+            <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-vr-pink shadow-lg bg-black/70">
+              <img
+                src="/avatar-alphawolf.jpg"
+                alt="Sigma of the Day"
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* Profile Info */}
+            <div className="flex-1 text-white">
+              <h2 className="text-3xl font-bold font-orbitron text-center lg:text-left text-white mb-4">Sigma of the Day</h2>
+              <div className="bg-black/60 p-4 rounded-xl border border-white/10 shadow space-y-3">
+                <p><span className="text-vr-pink font-semibold">Name:</span> Alpha Wolf</p>
+                <p><span className="text-vr-pink font-semibold">Age:</span> 29</p>
+                <div>
+                  <p className="text-vr-pink font-semibold mb-1">Bio:</p>
+                  <p className="text-white/70">A lone force of discipline and drive. He hunts success in silence and leads by instinct, not imitation.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="mb-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <h1 className="text-4xl md:text-5xl font-extrabold text-white">
             {selectedBoard.charAt(0).toUpperCase() + selectedBoard.slice(1)} Leaderboard
