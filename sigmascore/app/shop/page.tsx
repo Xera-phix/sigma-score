@@ -79,13 +79,17 @@ const SigmaShop = () => {
     <div className="min-h-screen bg-black text-white pt-24 pb-16 px-6 lg:px-20">
       <NavBar />
 
-      {/* Header */}
-      <div className="flex justify-between items-center mb-10">
-        <h1 className="text-3xl font-orbitron font-bold text-vr-purple">Sigma Shop</h1>
-        <div className="flex items-center gap-2 bg-vr-pink px-4 py-2 rounded-xl shadow-lg text-white font-bold">
-          💰 <span>{userSigma}</span>
+      <div className="mb-10">
+        <div className="flex justify-between items-center">
+            <h1 className="text-3xl font-orbitron font-bold text-vr-purple">Sigma Shop</h1>
+            <div className="flex items-center gap-2 bg-vr-pink px-4 py-2 rounded-xl shadow-lg text-white font-bold">
+            💰 <span>{userSigma}</span>
+            </div>
         </div>
-      </div>
+        <p className="mt-2 text-white/70 text-sm">
+            Trade your farmed aura points for sigma coins to invest in avatars as sigma as you.
+        </p>
+        </div>
 
       {/* Avatars Section */}
       <section className="relative mb-16 p-6 rounded-2xl border border-white/10 shadow overflow-hidden">
