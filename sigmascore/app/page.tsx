@@ -8,7 +8,7 @@ const dynamicText = "Unlock your sigma potential.";
 const featureCards = [
 	{
 		title: "AI-Powered Sigma Analysis",
-		desc: "Leverage advanced AI to analyze your content and receive actionable feedback to boost your sigma potential.",
+		desc: "Leverage advanced AI to analyze your rizz and receive actionable feedback to boost your sigma potential.",
 		icon: "🤖",
 	},
 	{
@@ -33,7 +33,7 @@ const featureCards = [
 	},
 	{
 		title: "Community Features",
-		desc: "Connect with other sigma users, share your scores, and participate in exclusive challenges.",
+		desc: "Connect with other sigma users, share your scores, and compete in the leaderboard to be the ultimate Gigachad.",
 		icon: "🌐",
 	},
 ];
@@ -80,8 +80,8 @@ export default function LandingPage() {
 							{dynamicText}
 						</h1>
 						<p className="text-base md:text-lg text-white/80 max-w-2xl mb-10">
-							Powered by A.I. technology you can gain aura and feel more sigma
-							and you can live with a new style.
+							Looksmax like Gigachad, farm aura, and transform into a true sigma with
+							SigmaScore, powered by A.I technology
 						</p>
 						<a
 							href="/login"
@@ -138,7 +138,7 @@ export default function LandingPage() {
 							{
 								name: "Alex J.",
 								avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-								quote: "SigmaScore changed my life. My aura is off the charts!",
+								quote: "SigmaScore changed me from a puny beta male to an alpha chad. My aura is off the charts!",
 							},
 							{
 								name: "Maya S.",
@@ -148,7 +148,7 @@ export default function LandingPage() {
 							{
 								name: "Chris P.",
 								avatar: "https://randomuser.me/api/portraits/men/65.jpg",
-								quote: "The dashboard keeps me motivated. Love the design!",
+								quote: "Lookmaxxing like how this sexy dashboard is lookmaxxed.",
 							},
 							{
 								name: "Lina M.",
@@ -158,7 +158,7 @@ export default function LandingPage() {
 							{
 								name: "Jordan K.",
 								avatar: "https://randomuser.me/api/portraits/men/77.jpg",
-								quote: "The community features are a game changer.",
+								quote: "Aura farming with the homies is fire.",
 							},
 						].map((t, idx) => (
 							<div
