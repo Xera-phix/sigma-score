@@ -138,7 +138,7 @@ const Dashboard = () => {
             <ol className="space-y-3">
               {leaderboard.map((entry, i) => (
                 <li
-                  key={entry.name}
+                  key={entry.id || entry.name || i}
                   className={`flex items-center justify-between px-4 py-2 rounded-lg transition-all duration-300 ${
                     entry.name === userName
                       ? "bg-vr-pink/30 text-white font-bold border-0 shadow"
