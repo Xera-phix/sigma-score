@@ -68,7 +68,7 @@ const NavBar = () => {
         {!authLoading && (user ? (
           <div className="relative">
             <button onClick={() => setShowUserMenu(!showUserMenu)} className="w-10 h-10 rounded-full bg-gradient-to-br from-vr-pink to-vr-red flex items-center justify-center text-white font-bold text-lg ring-4 ring-vr-pink/40 ring-offset-2 ring-offset-black">
-              {user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
+              {user.displayName ? user.displayName.charAt(0).toUpperCase() : (user.email ? user.email.charAt(0).toUpperCase() : '?')}
             </button>
             {showUserMenu && (
               <div className="absolute right-0 mt-2 w-48 bg-black/90 backdrop-blur-xl rounded-md shadow-lg py-1 border border-white/10">

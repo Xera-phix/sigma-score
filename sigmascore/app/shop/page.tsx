@@ -34,11 +34,11 @@ const SigmaShop = () => {
   const [userAura, setUserAura] = useState(540);
 
   const [showBuyModal, setShowBuyModal] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
 
   const [showExchangeModal, setShowExchangeModal] = useState(false);
 
-  const handleBuyClick = (item) => {
+  const handleBuyClick = (item: typeof avatarItems[number]) => {
     setSelectedItem(item);
     setShowBuyModal(true);
   };

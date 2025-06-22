@@ -200,7 +200,7 @@ export default function LandingPage() {
 			<footer className="w-full border-t border-purple-900/40 bg-black/60 backdrop-blur-md py-8 px-4 ring-4 ring-vr-pink/40 ring-offset-2 ring-offset-black">
 				<div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 w-full">
 					<div className="flex items-center gap-3">
-						<img src="/next.svg" alt="SigmaScore Logo" className="w-8 h-8" />
+						{/* <img src="/next.svg" alt="SigmaScore Logo" className="w-8 h-8" /> */}
 						<span className="text-white text-lg font-bold tracking-wide">SigmaScore</span>
 					</div>
 					<div className="flex gap-6 text-purple-300 text-sm font-medium flex-wrap justify-center">
